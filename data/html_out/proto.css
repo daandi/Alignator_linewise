@@ -1,0 +1,98 @@
+body {
+	font-family:Monospace;
+}
+
+#marked_image {
+	width:1000px;
+	height:1500px;
+	position:relative;
+	border:1px solid #AAA;
+}
+
+#wikisource_marked_image {
+	width:2000px;
+	height:3000px;
+	position:relative;
+	border:1px solid #AAA;
+}
+
+#image_text {
+	width:1000px;
+	height:1500px;
+	position:relative;
+	border:1px solid #AAA;
+}
+
+.marked, .marked_bad, .marked_split, .marked_split_fail, .marked_merge, .marked_merge_fail, .marked_weak_ocr_drop, .marked_ocr_drop {
+	display:block;
+	width:100%;
+	height:100%;
+	opacity: 0.3;
+}
+
+.marked {
+	background-color:green;
+}
+
+.marked_bad {
+	background-color:red;
+}
+
+.marked_split {
+	background-color:blue;
+}
+
+.marked_split_fail {
+	background-color:purple;
+}
+
+.marked_merge {
+	background-color:yellow;
+}
+
+.marked_merge_fail {
+	background-color:orange;
+}
+
+.marked_weak_ocr_drop {
+	background-color:lime;
+}
+
+.marked_ocr_drop {
+	background-color:YellowGreen;
+}
+
+.info {
+	display:none;
+	position:relative;
+	z-index:2;
+	padding: 0.2em;
+	border:1px solid black;
+}
+
+.info * {
+	background-color:white;
+	display:block;
+}
+
+.alignated_word:hover .info {
+	display:block;
+	background-color:white;
+	position: absolute;
+}
+
+.possible {
+	display:block;
+	width: 100%;
+	height: 100%;
+	border:1px solid grey;
+}
+
+.old_word {
+	display:block;
+}
+
+.word {
+	font-weight:bold;
+}
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="proto.css"/> 
+	<title>alignated_image</title>
+	
+</head>
+
+<body>
+	
+<fieldset>
+	<legend>Alignierte Grafik</legend>
+	<div id='marked_image' style='background-image: url(<%= @image_url %>);'>
+	<% for line in  @alignated_words do %>
+		<% for word in line do%>
+			<%= word.to_html %>
+		<% end %>
+	<% end %>
+	
+</div>
+</fieldset>
+
+
+<fieldset>
+	<legend>Alignierter Text</legend>
+	<div id='text'>
+		<% for line in  @alignated_words do %>
+			<% for word in line do%>
+				<%= word.text %>
+			<% end %>
+			<br/>
+		<% end %>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>Folgende Zeilen konnten nicht aligniert werden</legend>
+	<h2>OCR</h2>
+	<ul>
+	<% for line in @surplus_lines[:ocr] %>
+		<li><%= line %></li>
+	<% end %>
+	</ul>
+	
+	<h2>WeakOCR</h2>
+	<ul>
+	<% for line in @surplus_lines[:weak_ocr] %>
+		<li><%= line %></li>
+	<% end %>
+	</ul>
+</fieldset>
+
+<fieldset>
+	<legend>Folgende Wörter konnten nicht aligniert werden</legend>
+	<h2>OCR</h2>
+	<ull>
+	<% for line,index in @dropped_words[:ocr].each_with_index %>
+		<%  if line != []%>
+			<li>Zeile <%= index +1 %> : <%= line %> </li>
+		<% end %>
+	<% end %>
+	</ul>
+	
+	<h2>WeakOCR</h2>
+	<ul>
+	<% for line,index in @dropped_words[:weak_ocr].each_with_index %>
+		<%  if line != []%>
+			<li>Zeile <%= index +1 %> : <%= line %> </li>
+		<% end %>
+	<% end %>
+	</ul>
+</fieldset>
+
+
+</body>
+</html>
