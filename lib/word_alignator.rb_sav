@@ -30,13 +30,8 @@ class WordAlignator
                 break
             end
             
-            # Problem mit nicht wohlgeformten Strings (utf-8-Problem bei Levenshtein)
-            begin
-                distance = Text::Levenshtein.distance( ocr_word, ocrx_word.text)
-            rescue
-                puts "Problem mit #{ocrx_word.text} bei Ermittlung des Distanzmaßes, Überspringe dieses Wort"
-                next
-            end
+
+            distance = Text::Levenshtein.distance( ocr_word, ocrx_word.text)
 
             # Wenns irgendwie passt nehmen
             if distance <= 1 then
@@ -85,6 +80,7 @@ class WordAlignator
             :drop_ocr       => lookahead_drop_ocr(pos, @lookahead),
             :drop_weak_ocr  => lookahead_drop_weak_ocr(pos, @lookahead)
         }
+        
         minimal_distances = min_distances(distances)
         
         # Mehr als eine Möglichkeit
@@ -131,7 +127,7 @@ class WordAlignator
         weak_ocr_word   = @weak_ocr_line[pos]
         
         if weak_ocr_word and weak_ocr_word.text.length >= ocr_word.length then
-            weak_ocr_sub_sequence = weak_ocr_word.text.scan(/./u)[0..ocr_word.length() - 1].join("")
+            weak_ocr_sub_sequence = weak_ocr_word.text.scan(/./u)[0..ocr_word.length() - 1].to_s
             reamaining_word = weak_ocr_word.text[ocr_word.length..-1]
             if reamaining_word && reamaining_word.length > 0 then
                 distance = Text::Levenshtein.distance(weak_ocr_sub_sequence,ocr_word)
@@ -249,6 +245,7 @@ class WordAlignator
         while (distance_fixed_ocrx_word < best_distance) do
             puts "\t\tVorheriger Wortabstand -> Jetziger Wortabstand :#{best_distance} -> #{distance_fixed_ocrx_word}"
             puts "\t\t#{fixed_ocrx_word.text}| better than |#{word_with_best_distance.text}| for |#{ocr_word}|"
+            
             word_with_best_distance = fixed_ocrx_word
             best_distance = distance_fixed_ocrx_word
             split_count += 1
@@ -301,7 +298,7 @@ class WordAlignator
     def fix_merge_starting_at(pos)
         ocr_word        = @ocr_line[pos]
         weak_ocr_word   = @weak_ocr_line[pos]
-        weak_ocr_sub_sequence = weak_ocr_word.text.scan(/./u)[0..ocr_word.length() - 1].join("")
+        weak_ocr_sub_sequence = weak_ocr_word.text.scan(/./u)[0..ocr_word.length() - 1].to_s
         
         distance = Text::Levenshtein.distance(weak_ocr_sub_sequence,ocr_word)
         
@@ -357,18 +354,12 @@ class WordAlignator
     
     def join_splitted_word(split_start, count)
         split = @weak_ocr_line[split_start .. split_start + count ]
-        puts "\t\t\tTry to join -> #{split.collect{|w|w.text}.join("_")} -> l: #{split.length}"
-        fixed_word = split.collect{ |ocrx_w| ocrx_w.text}.join("")
+        #puts "\t\t\tTry to join -> #{split.collect{|w|w.text}.join("_")} -> l: #{split.length}"
+         fixed_word = split.collect{ |ocrx_w| ocrx_w.text}.join("")
         # Verhindern wenn merge mit Satzzeichen, dass falsche Höhe verwendet wird
         y2_max = split.collect{|w| w.y2.to_i}.max
         y1_min = split.collect{|w| w.y1.to_i}.min
-        
-        # Testen ob über mehrere Zeilen geht
-        unless split[0].x1 > split[-1].x2 then
-        	OCRXWord.new( split[0].x1, y1_min, split[-1].x2, y2_max, fixed_word)
-        else
-        	OCRXWord.new( split[0].x1, y1_min, split[0].x2, y2_max, fixed_word)
-        end
+        OCRXWord.new( split[0].x1, y1_min, split[-1].x2, y2_max, fixed_word)
     end
     
     

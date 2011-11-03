@@ -73,6 +73,27 @@
 	<% end %>
 	</ul>
 </fieldset>
+<fieldset>
+	<legend>Alignierung</legend>
+	<h2>Aufsteigender Abstand</h2>
+	<ul class="alignated_words">
+	<% for wort in @sorted_alignated_words %>
+		<%= wort.to_html_li %>
+	<% end %>
+	</ul>
+	<div clas='cleaner'></div>
+</fieldset>
+
+<fieldset>
+	<legend>Alignierung</legend>
+	<h2>Korrekte Reihenfolge</h2>
+	<ul class="alignated_words">
+	<% for wort in @alignated_words.flatten %>
+		<%= wort.to_html_li %>
+	<% end %>
+	</ul>
+	<div clas='cleaner'></div>
+</fieldset>
 
 
 </body>

@@ -22,6 +22,8 @@ class HtmlOutput
         @alignated_words    = alignated.alignated_words
         @surplus_lines      = alignated.surplus_lines
         @dropped_words  = alignated.dropped_words
+        @alignated_words    = [alignated.alignated_words.flatten]
+        @sorted_alignated_words = @alignated_words.flatten.sort_by {|a| a.distance}.reverse
         
         write_file
     end
